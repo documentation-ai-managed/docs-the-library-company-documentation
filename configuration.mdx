@@ -1,0 +1,187 @@
+---
+title: Configuration
+description: Configure The Library Company platform to match your documentation workflow needs
+---
+
+## Configuration Overview
+
+Configuring The Library Company platform involves setting up your workspace, defining access controls, and customizing the documentation environment to fit your team's requirements. Our platform offers flexible configuration options through both UI settings and API endpoints.
+
+<Columns cols={2}>
+  <Card title="Workspace Setup" icon="settings" href="#workspace-setup">
+    Configure your team's workspace and basic settings.
+  </Card>
+  <Card title="Access Controls" icon="shield" href="#access-controls">
+    Set up user roles and permissions.
+  </Card>
+</Columns>
+
+## Workspace Setup
+
+Start by configuring your workspace to establish the foundation for your documentation projects.
+
+<Steps>
+  <Step title="Create Workspace" icon="plus">
+    Set up your initial workspace with basic information.
+    
+    ````javascript
+const createWorkspace = async (config) => {
+  const response = await fetch('/api/workspaces', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({
+      name: config.name,
+      description: config.description,
+      settings: {
+        theme: 'light',
+        timezone: 'UTC',
+        language: 'en'
+      }
+    })
+  });
+  return response.json();
+};
+    ````
+  </Step>
+  <Step title="Configure Settings" icon="sliders">
+    Customize workspace settings for your team's preferences.
+    
+    <ParamField body="theme" param-type="string" required="false">
+      UI theme preference (light, dark, auto).
+    </ParamField>
+    
+    <ParamField body="timezone" param-type="string" required="false">
+      Default timezone for the workspace.
+    </ParamField>
+  </Step>
+  <Step title="Invite Members" icon="users">
+    Add team members to your workspace.
+  </Step>
+</Steps>
+
+## Access Controls
+
+Implement role-based access control to manage permissions across your documentation projects.
+
+<Tabs>
+  <Tab title="User Roles" icon="user">
+    Define roles and their associated permissions.
+    
+    | Role | Read | Write | Admin |
+    |------|------|-------|-------|
+    | Viewer | ✓ | ✗ | ✗ |
+    | Editor | ✓ | ✓ | ✗ |
+    | Admin | ✓ | ✓ | ✓ |
+  </Tab>
+  <Tab title="Project Permissions" icon="folder">
+    Set permissions at the project level.
+    
+    <Expandable title="Permission Levels" default-open="false">
+      Choose from granular permission levels for fine-tuned access control.
+      
+      - **Read**: View documentation
+      - **Write**: Edit and create content
+      - **Publish**: Approve and publish changes
+      - **Admin**: Full project management
+    </Expandable>
+  </Tab>
+</Tabs>
+
+## Advanced Configuration
+
+Fine-tune your workspace with advanced settings and integrations.
+
+<Callout kind="info">Advanced settings require admin privileges and may affect workspace performance.</Callout>
+
+<ExpandableGroup>
+  <Expandable title="Webhook Integrations" default-open="false">
+    Set up webhooks for automated notifications and integrations.
+    
+    <ParamField body="url" param-type="string" required="true">
+      Webhook endpoint URL for receiving notifications.
+    </ParamField>
+    
+    <ParamField body="events" param-type="array" required="false">
+      Array of events to trigger webhooks (e.g., ["doc.created", "doc.updated"]).
+    </ParamField>
+    
+    ````json
+    {
+      "url": "https://your-app.com/webhook",
+      "events": ["doc.created", "doc.updated", "doc.deleted"],
+      "secret": "your-webhook-secret"
+    }
+    ````
+  </Expandable>
+  <Expandable title="Custom Domains" default-open="false">
+    Configure custom domains for branded documentation sites.
+    
+    <Steps>
+      <Step title="Verify Domain" icon="check-circle">
+        Add and verify your custom domain.
+      </Step>
+      <Step title="Configure DNS" icon="globe">
+        Update DNS settings to point to our servers.
+      </Step>
+      <Step title="Enable SSL" icon="lock">
+        Set up SSL certificate for secure connections.
+      </Step>
+    </Steps>
+  </Expandable>
+</ExpandableGroup>
+
+## Environment Variables
+
+Configure environment-specific settings using variables.
+
+<CodeGroup tabs=".env,JSON">
+  ````bash
+# .env file
+LIBRARY_API_KEY=your-api-key
+LIBRARY_BASE_URL=https://api.librarycompany.com
+LIBRARY_TIMEOUT=30000
+LIBRARY_DEBUG=false
+  ````
+  ````json
+{
+  "apiKey": "your-api-key",
+  "baseUrl": "https://api.librarycompany.com",
+  "timeout": 30000,
+  "debug": false
+}
+  ````
+</CodeGroup>
+
+## Troubleshooting Configuration
+
+Common configuration issues and their solutions.
+
+<ExpandableGroup>
+  <Expandable title="Permission Denied Errors" default-open="false">
+    Check your user role and ensure you have the required permissions for the action.
+  </Expandable>
+  <Expandable title="Webhook Failures" default-open="false">
+    Verify webhook URLs are accessible and your server can handle the payload format.
+    
+    ````javascript
+const testWebhook = async (url) => {
+  const testPayload = {
+    event: 'test',
+    timestamp: Date.now(),
+    data: { message: 'Webhook test' }
+  };
+  
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(testPayload)
+  });
+  
+  return response.ok;
+};
+    ````
+  </Expandable>
+</ExpandableGroup>

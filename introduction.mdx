@@ -1,0 +1,91 @@
+---
+title: Introduction
+description: Overview of The Library Company and its core capabilities
+---
+
+## Getting Started
+
+The Library Company provides a comprehensive documentation management platform designed to help organizations create, organize, and maintain high-quality technical documentation. Whether you're building APIs, software libraries, or product guides, our tools streamline the documentation process with powerful features like real-time collaboration and automated publishing. Discover how to leverage our platform to enhance your documentation workflows and deliver better developer experiences.
+
+<Columns cols={3}>
+  <Card title="Quick Start" icon="zap" href="#getting-started">
+    Get up and running in minutes with our step-by-step setup guide.
+  </Card>
+  <Card title="API Documentation" icon="code" href="#api-reference">
+    Explore our comprehensive API for integrating documentation tools.
+  </Card>
+  <Card title="Best Practices" icon="star" href="#best-practices">
+    Learn proven strategies for creating effective documentation.
+  </Card>
+</Columns>
+
+## Key Features
+
+The Library Company offers a suite of features designed to make documentation creation and management seamless. Our platform supports multiple formats, including Markdown and MDX, with built-in version control and collaboration tools.
+
+<Tabs>
+  <Tab title="Collaboration" icon="users">
+    Enable team members to work together on documentation projects with real-time editing and comment threads.
+    
+    <Steps>
+      <Step title="Invite Team Members" icon="user-plus">
+        Add collaborators to your documentation projects.
+        
+        ````javascript
+        const inviteUser = async (email) => {
+          const response = await fetch('/api/invite', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+          });
+          return response.json();
+        };
+        ````
+      </Step>
+      <Step title="Set Permissions" icon="shield">
+        Configure access levels for different team roles.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Version Control" icon="git-branch">
+    Track changes and maintain version history for all your documentation.
+    
+    <Callout kind="tip">Use semantic versioning to keep your documentation organized and up-to-date.</Callout>
+  </Tab>
+</Tabs>
+
+## Use Cases
+
+Our platform serves various documentation needs across different industries and team sizes.
+
+<ExpandableGroup>
+  <Expandable title="Developer Documentation" default-open="false">
+    Create comprehensive API references, SDK guides, and integration tutorials for developers.
+    
+    <CodeGroup tabs="JavaScript,Python">
+      ````javascript
+      // Example API call
+const getDocs = async () => {
+  const response = await fetch('/api/docs');
+  return response.json();
+};
+      ````
+      ````python
+import requests
+
+def get_docs():
+    response = requests.get('/api/docs')
+    return response.json()
+      ````
+    </CodeGroup>
+  </Expandable>
+  <Expandable title="Product Documentation" default-open="false">
+    Build user guides, release notes, and feature documentation for end-users.
+  </Expandable>
+</ExpandableGroup>
+
+## Getting Help
+
+If you need assistance getting started or have questions about our platform, our support team is here to help.
+
+<Callout kind="info">Contact our support team at support@librarycompany.com for personalized assistance.</Callout>

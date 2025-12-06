@@ -1,0 +1,197 @@
+---
+title: Integrations
+description: Connect The Library Company with your favorite tools and services
+---
+
+## Integration Overview
+
+The Library Company supports integrations with popular development tools, CI/CD pipelines, and collaboration platforms to streamline your documentation workflow. These integrations help automate publishing, sync content, and maintain consistency across your tech stack.
+
+<Columns cols={3}>
+  <Card title="GitHub" icon="github" href="#github-integration">
+    Sync documentation with GitHub repositories.
+  </Card>
+  <Card title="Slack" icon="message-square" href="#slack-integration">
+    Get notifications in Slack channels.
+  </Card>
+  <Card title="Jira" icon="check-square" href="#jira-integration">
+    Link documentation to Jira issues.
+  </Card>
+</Columns>
+
+## GitHub Integration
+
+Connect your documentation to GitHub for version-controlled, collaborative content management.
+
+<Steps>
+  <Step title="Install GitHub App" icon="download">
+    Install The Library Company GitHub App from the GitHub Marketplace.
+  </Step>
+  <Step title="Authorize Repository" icon="check-circle">
+    Grant access to your documentation repositories.
+    
+    ````bash
+git clone https://github.com/your-org/docs-repo.git
+cd docs-repo
+npm install
+    ````
+  </Step>
+  <Step title="Configure Webhooks" icon="settings">
+    Set up webhooks for automatic documentation updates.
+    
+    <ParamField body="repository" param-type="string" required="true">
+      GitHub repository in format 'owner/repo'.
+    </ParamField>
+    
+    <ParamField body="branch" param-type="string" required="false">
+      Branch to sync with (default: main).
+    </ParamField>
+  </Step>
+</Steps>
+
+<Callout kind="tip">Use GitHub Actions to automate documentation publishing on every push.</Callout>
+
+## Slack Integration
+
+Receive notifications and updates directly in your Slack workspace.
+
+<Tabs>
+  <Tab title="Setup" icon="settings">
+    Configure Slack integration for your workspace.
+    
+    <Steps>
+      <Step title="Add to Slack" icon="plus">
+        Click "Add to Slack" and authorize the app.
+      </Step>
+      <Step title="Select Channels" icon="hash">
+        Choose channels for documentation notifications.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Notifications" icon="bell">
+    Customize notification types and frequency.
+    
+    | Event | Description | Default Channel |
+    |-------|-------------|----------------|
+    | Doc Published | New documentation published | #docs |
+    | Review Requested | Documentation review needed | #docs |
+    | Comment Added | New comment on documentation | #docs |
+  </Tab>
+</Tabs>
+
+## Jira Integration
+
+Link documentation to Jira issues for better project tracking and context.
+
+<ExpandableGroup>
+  <Expandable title="Issue Linking" default-open="false">
+    Automatically link documentation updates to related Jira issues.
+    
+    ````javascript
+const linkToJira = async (docId, issueKey) => {
+  const response = await fetch(`/api/docs/${docId}/jira`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({
+      issueKey: issueKey,
+      linkType: 'relates to'
+    })
+  });
+  return response.json();
+};
+    ````
+  </Expandable>
+  <Expandable title="Status Sync" default-open="false">
+    Sync documentation status with Jira issue status.
+    
+    <ParamField body="jiraProject" param-type="string" required="true">
+      Jira project key for status synchronization.
+    </ParamField>
+  </Expandable>
+</ExpandableGroup>
+
+## API Integrations
+
+Build custom integrations using our REST API and webhooks.
+
+<CodeGroup tabs="Node.js,Python">
+  ````javascript
+  // Node.js webhook handler
+const express = require('express');
+const app = express();
+
+app.post('/webhook/docs', (req, res) => {
+  const { event, data } = req.body;
+  
+  switch (event) {
+    case 'doc.created':
+      console.log(`New doc created: ${data.title}`);
+      break;
+    case 'doc.updated':
+      console.log(`Doc updated: ${data.title}`);
+      break;
+  }
+  
+  res.sendStatus(200);
+});
+
+app.listen(3000);
+  ````
+  ````python
+from flask import Flask, request
+
+app = Flask(__name__)
+
+@app.route('/webhook/docs', methods=['POST'])
+def handle_webhook():
+    data = request.get_json()
+    event = data.get('event')
+    
+    if event == 'doc.created':
+        print(f"New doc created: {data['title']}")
+    elif event == 'doc.updated':
+        print(f"Doc updated: {data['title']}")
+    
+    return '', 200
+
+if __name__ == '__main__':
+    app.run(port=3000)
+  ````
+</CodeGroup>
+
+## Third-Party Integrations
+
+Connect with popular development and collaboration tools.
+
+<ExpandableGroup>
+  <Expandable title="CI/CD Pipelines" default-open="false">
+    Integrate documentation publishing into your CI/CD workflows.
+    
+    <Steps>
+      <Step title="Configure API Access" icon="key">
+        Set up API credentials for your CI system.
+      </Step>
+      <Step title="Add Publishing Step" icon="play">
+        Include documentation publishing in your pipeline.
+        
+        ````yaml
+        # GitHub Actions example
+        - name: Publish Docs
+          run: |
+            curl -X POST https://api.librarycompany.com/v1/publish \
+              -H "Authorization: Bearer ${{ secrets.LIBRARY_TOKEN }}" \
+              -H "Content-Type: application/json" \
+              -d '{"project": "my-project", "version": "1.0.0"}'
+        ````
+      </Step>
+    </Steps>
+  </Expandable>
+  <Expandable title="Content Management Systems" default-open="false">
+    Sync documentation with CMS platforms like WordPress or Contentful.
+  </Expandable>
+</ExpandableGroup>
+
+<Callout kind="info">Need a custom integration? Contact our partnerships team at partnerships@librarycompany.com.</Callout>
